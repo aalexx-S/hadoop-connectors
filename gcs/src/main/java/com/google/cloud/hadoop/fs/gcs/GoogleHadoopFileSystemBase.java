@@ -74,6 +74,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.flogger.GoogleLogger;
+import com.google.common.io.BaseEncoding;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -107,7 +108,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import org.apache.commons.codec.binary.Hex;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.ContentSummary;
 import org.apache.hadoop.fs.FSDataInputStream;
@@ -381,7 +381,8 @@ public abstract class GoogleHadoopFileSystemBase extends FileSystem
 
     @Override
     public String toString() {
-      return getAlgorithmName() + ": " + (bytes == null ? null : new String(Hex.encodeHex(bytes)));
+      return String.format(
+          "%s: %s", getAlgorithmName(), bytes == null ? null : BaseEncoding.base16().encode(bytes));
     }
   }
 
